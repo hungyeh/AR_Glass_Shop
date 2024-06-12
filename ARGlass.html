@@ -1,0 +1,113 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        const list = ["ConanGlasses", "HeartGlasses", "NANAMIGlasses", "PixelGlasses", "RGBAGlasses", "StarGlasses"];
+        const visibles = [false, false, false, false, false, false];
+
+        const setVisible = (button, entities, visible) => {
+          if (button) { // 確保 button 不是 null
+            if (visible) {
+              button.classList.add("selected");
+            } else {
+              button.classList.remove("selected");
+            }
+          }
+          entities.forEach((entity) => {
+            entity.setAttribute("visible", visible);
+          });
+        }
+
+        list.forEach((item, index) => {
+          const button = document.querySelector("#" + item);
+          // console.log(button);
+	        const entities = document.querySelectorAll("." + item + "-entity");
+          // console.log(entities);
+          if (button) { // 檢查 button 是否存在
+            setVisible(button, entities, visibles[index]);  // 初始化時設定為false
+            button.addEventListener('click', () => {
+              visibles[index] = !visibles[index];
+              setVisible(button, entities, visibles[index]);
+            });
+          }
+        });
+
+        let params = new URLSearchParams(window.location.search);
+        let glassesType = params.get('glassesType'); 
+        // console.log("眼鏡名稱", glassesType);
+
+        if (glassesType && list.includes(glassesType)) {
+          let index = list.indexOf(glassesType);
+          visibles[index] = true;  // 將對應的 visibles 設定為 true
+          const button = document.querySelector("#" + glassesType);
+          const entities = document.querySelectorAll("." + glassesType + "-entity");
+          setVisible(button, entities, true);
+        }
+      });
+    </script>
+    <style>
+      body {
+        margin: 0;
+      }
+      .example-container {
+        overflow: hidden;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+      .options-panel {
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 2;
+      }
+      .options-panel img {
+        border: solid 2px;
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        cursor: pointer;
+      }
+      .options-panel img.selected {
+	      border-color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="example-container">
+      <div class="options-panel">
+        <img id="ConanGlasses" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/face-tracking/assets/hat/thumbnail.png"/>
+        <img id="HeartGlasses" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/face-tracking/assets/hat2/thumbnail.png"/>
+        <img id="NANAMIGlasses" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/face-tracking/assets/glasses/thumbnail.png"/>
+        <img id="PixelGlasses" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/face-tracking/assets/glasses2/thumbnail.png"/>
+        <img id="RGBAGlasses" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/face-tracking/assets/earring/thumbnail.png"/>
+        <img id="StarGlasses" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/face-tracking/assets/earring/thumbnail.png"/>
+      </div>
+      <a-scene mindar-face embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+        <a-assets>
+          <a-asset-item id="headModel" src="./Model/headOccluder.glb"></a-asset-item>
+          <a-asset-item id="ConanGlassesModel" src="./Model/Conan Glasses.glb"></a-asset-item>
+          <a-asset-item id="HeartGlassesModel" src="./Model/Heart Glasses.glb"></a-asset-item>
+          <a-asset-item id="NANAMIGlassesModel" src="./Model/NANAMI Glasses.glb"></a-asset-item>
+          <a-asset-item id="PixelGlassesModel" src="./Model/Pixel Glasses.glb"></a-asset-item>
+          <a-asset-item id="RGBAGlassesModel" src="./Model/RGBA Glasses.glb"></a-asset-item>
+          <a-asset-item id="StarGlassesModel" src="./Model/Star Glasses.glb"></a-asset-item>
+        </a-assets>
+        <a-camera active="false" position="0 0 0"></a-camera>
+	      <!-- head occluder -->
+        <a-entity mindar-face-target="anchorIndex: 168">
+	        <a-gltf-model mindar-face-occluder position="0 -0.3 0.15"rotation="0 0 0" scale="0.065 0.065 0.065" src="#headModel"></a-gltf-model>
+	        <a-gltf-model rotation="0 -0 0" position="0 -0.3 -0.1" scale="9 9 9" src="#ConanGlassesModel" class="ConanGlasses-entity" visible="false"></a-gltf-model>
+	        <a-gltf-model rotation="0 -0 0" position="0 -0.3 -0.1" scale="9 9 9" src="#HeartGlassesModel" class="HeartGlasses-entity" visible="false"></a-gltf-model>
+	        <a-gltf-model rotation="0 -0 0" position="0 -0.3 -0.1" scale="9 9 9" src="#NANAMIGlassesModel" class="NANAMIGlasses-entity" visible="false"></a-gltf-model>
+	        <a-gltf-model rotation="0 0 0" position="0 -0.3 -0.1" scale="9 9 9" src="#PixelGlassesModel" class="PixelGlasses-entity" visible="false"></a-gltf-model>
+	        <a-gltf-model rotation="-0 -0 0" position="0 -0.3 -0.1" scale="9 9 9" src="#RGBAGlassesModel" class="RGBAGlasses-entity" visible="false"></a-gltf-model>
+	        <a-gltf-model rotation="-0 -0 0" position="0 -0.3 -0.1" scale="9 9 9" src="#StarGlassesModel" class="StarGlasses-entity" visible="false"></a-gltf-model>
+        </a-entity>
+      </a-scene>
+    </div>
+  </body>
+</html>

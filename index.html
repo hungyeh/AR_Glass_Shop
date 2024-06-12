@@ -1,106 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      const list = ["glasses1", "glasses2", "hat1", "hat2", "earring"];
-      const visibles = [true, false, false, false, false];
-
-      const setVisible = (button, entities, visible) => {
-        if (visible) {
-          button.classList.add("selected");
-        } else {
-          button.classList.remove("selected");
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce AR Glasses Questionnaire</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #FFF;
+            margin: 0;
+            padding: 0;
         }
-        entities.forEach((entity) => {
-          entity.setAttribute("visible", visible);
-        });
-      };
-
-      list.forEach((item, index) => {
-        const button = document.querySelector("#" + item);
-        const entities = document.querySelectorAll("." + item + "-entity");
-        setVisible(button, entities, visibles[index]);
-        button.addEventListener('click', () => {
-          visibles[index] = !visibles[index];
-          setVisible(button, entities, visibles[index]);
-        });
-      });
-    });
-  </script>
-  <style>
-    body {
-      margin: 0;
-    }
-    .example-container {
-      overflow: hidden;
-      position: absolute;
-      width: 100%;
-      height: 100%;
-    }
-    .options-panel {
-      position: fixed;
-      left: 0;
-      top: 0;
-      z-index: 2;
-    }
-    .options-panel img {
-      border: solid 2px;
-      width: 50px;
-      height: 50px;
-      object-fit: cover;
-      cursor: pointer;
-    }
-    .options-panel img.selected {
-      border-color: green;
-    }
-  </style>
+        .header {
+            background-color: #FFF;
+            color: white;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            padding: 20px;
+        }
+        .card {
+            background-color: #FFF;
+            margin: 10px;
+            width: calc(23% - 20px); /* Adjusted for four items per row */
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .card img {
+            width: 100%;
+            height: auto;
+        }
+        .footer {
+            background-color: #FFF;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+    <script>
+        function sendGlassesInfo(element) {
+            var glassesType = element.alt;
+            window.location.href = 'ARGlass.html?glassesType=' + encodeURIComponent(glassesType);
+        }
+    </script>
 </head>
 <body>
-  <div class="example-container">
-    <div class="options-panel">
-      <img id="hat1" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/face-tracking/assets/hat/thumbnail.png"/>
-      <img id="hat2" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/face-tracking/assets/hat2/thumbnail.png"/>
-      <img id="glasses1" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/face-tracking/assets/glasses/thumbnail.png"/>
-      <img id="glasses2" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/face-tracking/assets/glasses2/thumbnail.png"/>
-      <img id="earring" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/face-tracking/assets/earring/thumbnail.png"/>
+    <div class="header">
+        <img src="./Image/Logo.png" alt="Logo">
     </div>
-    <a-scene mindar-face embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
-      <a-assets>
-        <a-asset-item id="headModel" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/face-tracking/assets/sparkar/headOccluder.glb"></a-asset-item>
-        <a-asset-item id="glassesModel" src="./Model/Conan Glasses.glb"></a-asset-item>
-        <a-asset-item id="glassesModel2" src="./Model/Heart Glasses.glb"></a-asset-item>
-        <a-asset-item id="hatModel" src="./Model/NANAMI Glasses.glb"></a-asset-item>
-        <a-asset-item id="hatModel2" src="./Model/Pixel Glasses.glb"></a-asset-item>
-        <a-asset-item id="earringModel" src="./Model/RGBA Glasses.glb"></a-asset-item>
-      </a-assets>
-      <a-camera active="false" position="0 0 0"></a-camera>
-      <!-- head occluder -->
-      <a-entity mindar-face-target="anchorIndex: 168">
-        <a-gltf-model mindar-face-occluder position="0 -0.3 0.15"rotation="0 0 0" scale="0.065 0.065 0.065" src="#headModel"></a-gltf-model>
-      </a-entity>
-      <a-entity mindar-face-target="anchorIndex: 10">
-        <a-gltf-model rotation="0 -0 0" position="0 1.0 -0.5" scale="0.35 0.35 0.35" src="#hatModel" class="hat1-entity" visible="false"></a-gltf-model>
-      </a-entity>
-      <a-entity mindar-face-target="anchorIndex: 10">
-        <a-gltf-model rotation="0 -0 0" position="0 -0.2 -0.5" scale="0.008 0.008 0.008" src="#hatModel2" class="hat2-entity" visible="false"></a-gltf-model>
-      </a-entity>
-      <a-entity mindar-face-target="anchorIndex: 168">
-        <a-gltf-model rotation="0 -0 0" position="0 0 0" scale="0.01 0.01 0.01" src="#glassesModel" class="glasses1-entity" visible="false"></a-gltf-model>
-      </a-entity>
-      <a-entity mindar-face-target="anchorIndex: 168">
-        <a-gltf-model rotation="0 -90 0" position="0 -0.3 0" scale="0.6 0.6 0.6" src="#glassesModel2" class="glasses2-entity" visible="false"></a-gltf-model>
-      </a-entity>
-      <a-entity mindar-face-target="anchorIndex: 127">
-        <a-gltf-model rotation="-0.1 -0 0" position="0 -0.3 -0.3" scale="0.05 0.05 0.05" src="#earringModel" class="earring-entity" visible="false"></a-gltf-model>
-      </a-entity>
-      <a-entity mindar-face-target="anchorIndex: 356">
-        <a-gltf-model rotation="0.1 -0 0" position="0 -0.3 -0.3" scale="0.05 0.05 0.05" src="#earringModel" class="earring-entity" visible="false"></a-gltf-model>
-      </a-entity>
-    </a-scene>
-  </div>
+    <div>
+        <img style="width: 100%;" src="./Image/Slider1.png" alt="Slider1" >
+    </div>
+    <div class="container">
+        <div>
+            <img src="./Image/Shout1.png" alt="Shout1">
+        </div>
+        <div class="card">
+            <img src="./Image/Conan Glasses.png" alt="ConanGlasses" onclick="sendGlassesInfo(this)">
+            <!-- <p>Conan Glasses</p> -->
+        </div>
+        <div class="card">
+            <img src="./Image/Heart Glasses.png" alt="HeartGlasses" onclick="sendGlassesInfo(this)">
+            <!-- <p>Heart Glasses</p> -->
+        </div>
+        <div class="card">
+            <img src="./Image/NANAMI Glasses.png" alt="NANAMIGlasses" onclick="sendGlassesInfo(this)">
+            <!-- <p>NANAMI Glasses</p> -->
+        </div>
+        <div class="container" style="background-color: #C1DCDC;">
+            <div class="card">
+                <img src="./Image/RGBA Glasses.png" alt="RGBAGlasses" onclick="sendGlassesInfo(this)">
+                <!-- <p>RGBA Glasses</p> -->
+            </div>
+            <div class="card">
+                <img src="./Image/Pixel Glasses.png" alt="PixelGlasses" onclick="sendGlassesInfo(this)">
+                <!-- <p>Pixel Glasses</p> -->
+            </div>
+            <div class="card">
+                <img src="./Image/Star Glasses.png" alt="StarGlasses" onclick="sendGlassesInfo(this)">
+                <!-- <p>Star Glasses</p> -->
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <img src="./Image/Footer.png" alt="Footer">
+    </div>
 </body>
 </html>
