@@ -25,7 +25,7 @@
         .card {
             background-color: #FFF;
             margin: 10px;
-            width: calc(23% - 20px); /* Adjusted for four items per row */
+            width: calc(25% - 20px); /* Adjusted for four items per row */
             padding: 10px;
             text-align: center;
             cursor: pointer;
@@ -42,6 +42,8 @@
             position: fixed;
             bottom: 0;
             width: 100%;
+            position: fixed; /* 或 sticky */
+            z-index: 100; /* 確保footer在最上層 */
         }
     </style>
     <script>
@@ -59,20 +61,22 @@
         <img style="width: 100%;" src="./Image/Slider1.png" alt="Slider1" >
     </div>
     <div class="container">
-        <div>
-            <img src="./Image/Shout1.png" alt="Shout1">
-        </div>
-        <div class="card">
-            <img src="./Image/Conan Glasses.png" alt="ConanGlasses" onclick="sendGlassesInfo(this)">
-            <!-- <p>Conan Glasses</p> -->
-        </div>
-        <div class="card">
-            <img src="./Image/Heart Glasses.png" alt="HeartGlasses" onclick="sendGlassesInfo(this)">
-            <!-- <p>Heart Glasses</p> -->
-        </div>
-        <div class="card">
-            <img src="./Image/NANAMI Glasses.png" alt="NANAMIGlasses" onclick="sendGlassesInfo(this)">
-            <!-- <p>NANAMI Glasses</p> -->
+        <div class="container">
+            <div>
+                <img src="./Image/Shout1.png" alt="Shout1">
+            </div>
+            <div class="card">
+                <img src="./Image/Conan Glasses.png" alt="ConanGlasses" onclick="sendGlassesInfo(this)">
+                <!-- <p>Conan Glasses</p> -->
+            </div>
+            <div class="card">
+                <img src="./Image/Heart Glasses.png" alt="HeartGlasses" onclick="sendGlassesInfo(this)">
+                <!-- <p>Heart Glasses</p> -->
+            </div>
+            <div class="card">
+                <img src="./Image/NANAMI Glasses.png" alt="NANAMIGlasses" onclick="sendGlassesInfo(this)">
+                <!-- <p>NANAMI Glasses</p> -->
+            </div>
         </div>
         <div class="container" style="background-color: #C1DCDC;">
             <div class="card">
